@@ -1,0 +1,4 @@
+int sertac;
+begin
+	sertac = 0 + 213 * 12  == dasdas and deneme[2];
+end

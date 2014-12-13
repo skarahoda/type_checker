@@ -1,0 +1,34 @@
+%{
+#include "parser.tab.h"	//get tokens from bison 
+%}
+%%
+"false"			{ return tFALSE;	}
+"true"			{ return tTRUE;		}
+"int"			{ return tINT;		}
+"real"			{ return tREAL;		}
+"boolean"		{ return tBOOLEAN;	}
+"begin"			{ return tBEGIN;	}
+"end"			{ return tEND;		}
+"if"			{ return tIF;		}
+"then"			{ return tTHEN;		}
+"else"			{ return tELSE;		}
+"while"			{ return tWHILE;	}
+";"			{ return tSEMI;		}
+"="			{ return tASSIGN;	}
+"("			{ return tLPAREN;	}
+")"			{ return tRPAREN;	}
+"["			{ return tLBRACKET;	}
+"]"			{ return tRBRACKET;	}
+"+"			{ return tPLUS;		}
+"*"			{ return tSTAR;		}
+"<"			{ return tLESS;		}
+"=="			{ return tEQ;		}
+"and"			{ return tAND;		}
+"-"			{ return tMINUS;	}
+"not"			{ return tNOT;		}
+[0-9]+			{ return tINTNUM;	}
+[0-9]*"."[0-9]+		{ return tREALNUM;	}
+[A-Za-z][A-Za-z0-9]*	{ return tID;		}
+[ \t\n\r]		/*skip whitespace*/
+.			{ printf("Unknown character: \"%c\"\n",yytext[0]);	} /*print error and skip the errorneous character*/
+%%
