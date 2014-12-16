@@ -1,34 +1,38 @@
 %{
-#include "parser.tab.h"	//get tokens from bison 
+#include "parser_data.h"
+#include "parser.tab.h"	//get tokens from bison
+#include <string.h>
+int line_counter = 1;
 %}
 %%
-"false"			{ return tFALSE;	}
-"true"			{ return tTRUE;		}
-"int"			{ return tINT;		}
-"real"			{ return tREAL;		}
-"boolean"		{ return tBOOLEAN;	}
-"begin"			{ return tBEGIN;	}
-"end"			{ return tEND;		}
-"if"			{ return tIF;		}
-"then"			{ return tTHEN;		}
-"else"			{ return tELSE;		}
-"while"			{ return tWHILE;	}
-";"			{ return tSEMI;		}
-"="			{ return tASSIGN;	}
-"("			{ return tLPAREN;	}
-")"			{ return tRPAREN;	}
-"["			{ return tLBRACKET;	}
-"]"			{ return tRBRACKET;	}
-"+"			{ return tPLUS;		}
-"*"			{ return tSTAR;		}
-"<"			{ return tLESS;		}
-"=="			{ return tEQ;		}
-"and"			{ return tAND;		}
-"-"			{ return tMINUS;	}
-"not"			{ return tNOT;		}
-[0-9]+			{ return tINTNUM;	}
-[0-9]*"."[0-9]+		{ return tREALNUM;	}
-[A-Za-z][A-Za-z0-9]*	{ return tID;		}
-[ \t\n\r]		/*skip whitespace*/
+"false"			{ yylval.line = line_counter;		return tFALSE;		}
+"true"			{ yylval.line = line_counter;		return tTRUE;		}
+"int"			{ yylval.line = line_counter;		return tINT;		}
+"real"			{ yylval.line = line_counter;		return tREAL;		}
+"boolean"		{ yylval.line = line_counter;		return tBOOLEAN;	}
+"begin"			{ yylval.line = line_counter;		return tBEGIN;		}
+"end"			{ yylval.line = line_counter;		return tEND;		}
+"if"			{ yylval.line = line_counter;		return tIF;		}
+"then"			{ yylval.line = line_counter;		return tTHEN;		}
+"else"			{ yylval.line = line_counter;		return tELSE;		}
+"while"			{ yylval.line = line_counter;		return tWHILE;		}
+";"			{ yylval.line = line_counter;		return tSEMI;		}
+"="			{ yylval.line = line_counter;		return tASSIGN;		}
+"("			{ yylval.line = line_counter;		return tLPAREN;		}
+")"			{ yylval.line = line_counter;		return tRPAREN;		}
+"["			{ yylval.line = line_counter;		return tLBRACKET;	}
+"]"			{ yylval.line = line_counter;		return tRBRACKET;	}
+"+"			{ yylval.line = line_counter;		return tPLUS;		}
+"*"			{ yylval.line = line_counter;		return tSTAR;		}
+"<"			{ yylval.line = line_counter;		return tLESS;		}
+"=="			{ yylval.line = line_counter;		return tEQ;		}
+"and"			{ yylval.line = line_counter;		return tAND;		}
+"-"			{ yylval.line = line_counter;		return tMINUS;		}
+"not"			{ yylval.line = line_counter;		return tNOT;		}
+[0-9]*"."[0-9]+		{ yylval.my_int.val = atof(yytext);	yylval.line = line_counter;		return tREALNUM;	}
+[0-9]+			{ yylval.my_int.val = atoi(yytext);	yylval.my_int.line = line_counter;	return tINTNUM;	}
+[A-Za-z][A-Za-z0-9]*	{ yylval.my_str.id = strdup(yytext);	yylval.my_str.line = line_counter;	return tID;	}
+[ \t\r]			/*skip whitespace*/
+[\n]			{ line_counter++;	}
 .			{ printf("Unknown character: \"%c\"\n",yytext[0]);	} /*print error and skip the errorneous character*/
 %%

@@ -1,4 +1,12 @@
-int sertac;
+int a;
+real b;
+boolean c;
+int d[1];
+real x[10];
 begin
-	sertac = 0 + 213 * 12  == dasdas and deneme[2];
+a = 3;
+b = 5;
+c = 10;
+d[b] = 2;
+x = 1;
 end
